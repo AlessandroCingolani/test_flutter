@@ -50,80 +50,95 @@ class _ListaPersonaggiState extends State<ListaPersonaggi> {
           } else if (snapshot.hasError) {
             // Se restituisce un errore manda il messaggio in pagina
             return Center(child: Text('Errore: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
             // Se arrivano dati fa vedere in pagina la lista
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/dettaglio-personaggio',
-                            arguments: snapshot.data![index],
-                          );
-                        },
-                        child: Card(
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                          ),
-                          margin: const EdgeInsets.all(20),
-                          clipBehavior: Clip.hardEdge,
-                          child: Row(
-                            children: [
-                              Column(
+          } else if (snapshot.hasData) {
+            // builder per la direzione
+            return OrientationBuilder(
+              // si aspetta il contentuto e la direzione
+              builder: (BuildContext context,Orientation orientation) {
+                return GridView.builder(
+                  // snapshot dato che arriva dal future builder
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/dettaglio-personaggio',
+                                arguments: snapshot.data![index],
+                              );
+                            },
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                              ),
+                              margin: const EdgeInsets.all(20),
+                              clipBehavior: Clip.hardEdge,
+                              child: Row(
                                 children: [
-                                  Hero(
-                                    tag: 'hero-tag-${snapshot.data![index].id}', // Tag univoco per ogni personaggio
-                                    child: CircleAvatar(
-                                      backgroundImage: NetworkImage(snapshot.data![index].image),
-                                      radius: 40.0,
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Hero(
+                                        tag: 'hero-tag-${snapshot.data![index].id}', // Tag univoco per ogni personaggio
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(snapshot.data![index].image),
+                                          radius: 40.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 16.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          snapshot.data![index].name,
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8.0),
+                                        Text(
+                                          'Status: ${snapshot.data![index].status}',
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                        Text(
+                                          'Species: ${snapshot.data![index].species}',
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 16.0),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data![index].name,
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      'Status: ${snapshot.data![index].status}',
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                    Text(
-                                      'Species: ${snapshot.data![index].species}',
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
+                            ),
+                          )
 
+                      ),
+                    );
+                  },
+                  // se lo schermo è in verticale o orizzontale prende 1 o 2 colonne
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
+                      // dimensione figli
+                      childAspectRatio: 3
                   ),
                 );
-              },
+              }
             );
           } else {
             // Se non c è nessun dato
