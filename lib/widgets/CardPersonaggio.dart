@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import '../models/Personaggio.dart';
 
-class CardPersonaggio extends StatelessWidget {
-  final Personaggio personaggio;  // Passi l'oggetto dinamico qui
+class CardPersonaggio extends StatefulWidget {
+  final Personaggio personaggio; // Passi l'oggetto dinamico qui
 
-  const CardPersonaggio({super.key,required this.personaggio})  ;
+  const CardPersonaggio({super.key, required this.personaggio});
+
+  @override
+  State<CardPersonaggio> createState() => _CardPersonaggioState();
+}
+
+class _CardPersonaggioState extends State<CardPersonaggio> {
+  bool isFavourite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,7 @@ class CardPersonaggio extends StatelessWidget {
             Navigator.pushNamed(
               context,
               '/dettaglio-personaggio',
-              arguments: personaggio,
+              arguments: widget.personaggio,
             );
           },
           child: Card(
@@ -26,49 +33,69 @@ class CardPersonaggio extends StatelessWidget {
             ),
             margin: const EdgeInsets.all(20),
             clipBehavior: Clip.hardEdge,
-            child: Row(
+            child: Stack(
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
                   children: [
-                    Hero(
-                      tag: 'hero-tag-${personaggio.id}',
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(personaggio.image),
-                        radius: 40.0,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Hero(
+                          tag: 'hero-tag-${widget.personaggio.id}',
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(widget.personaggio.image),
+                            radius: 40.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.personaggio.name,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            'Status: ${widget.personaggio.status}',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          Text(
+                            'Species: ${widget.personaggio.species}',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        personaggio.name,
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        'Status: ${personaggio.status}',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      Text(
-                        'Species: ${personaggio.species}',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
+                Positioned(
+                  bottom: 30,
+                  right: 10.0,
+                  child: IconButton(
+                    icon: Icon(
+                      isFavourite ? Icons.favorite : Icons.favorite_outline,
+                      color: Colors.red,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isFavourite = !isFavourite; // Cambia lo stato quando cliccato
+                      });
+                    },
                   ),
                 ),
               ],
@@ -79,3 +106,4 @@ class CardPersonaggio extends StatelessWidget {
     );
   }
 }
+
