@@ -10,6 +10,7 @@ class DettaglioPersonaggio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: const Header(title: 'Dettagli Personaggio'),
       drawer: CustomeDrawerHeader(),
@@ -20,8 +21,8 @@ class DettaglioPersonaggio extends StatelessWidget {
             children: [
               Text(
                 personaggio.name,
-                style: const TextStyle(
-                  fontSize: 25.0,
+                style: TextStyle(
+                  fontSize: size > 600 ? 40 : 25.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -30,8 +31,10 @@ class DettaglioPersonaggio extends StatelessWidget {
                 tag: 'hero-tag-${personaggio.id}',
                 child: Image.network(
                   personaggio.image,
-                  fit: BoxFit.cover,
-                  height: 300,
+                  fit: BoxFit.fill,
+                  height: size > 600 ? 600 : 300,
+                  width: size > 600 ? 600 : 300,
+
                 ),
               ),
               const SizedBox(height: 20.0),
