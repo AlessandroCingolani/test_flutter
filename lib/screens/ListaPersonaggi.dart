@@ -10,15 +10,17 @@ import 'package:test_flutter/widgets/Header.dart';
 
 Future<List<Personaggio>> fetchPersonaggi()async {
   List<Personaggio> personaggi = [];
-  var response = await http.get(Uri.parse('https://api.sampleapis.com/rickandmorty/characters'));
+  var response = await http.get(Uri.parse('https://api.sampleapis.com/rickandmorty/characters/1'));
 
   var body = json.decode(response.body);
 
-
-  for(var i = 0;i < body.length;i++){
-    personaggi.add(Personaggio.fromJson(body[i]));
+  if (body is List) {
+    for (var i = 0; i < body.length; i++) {
+      personaggi.add(Personaggio.fromJson(body[i]));
+    }
+  } else if (body is Map<String, dynamic>) {
+    personaggi.add(Personaggio.fromJson(body));
   }
-
   return personaggi;
 }
 

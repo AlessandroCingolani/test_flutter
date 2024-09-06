@@ -7,17 +7,23 @@ import '../widgets/Header.dart';
 
 Future<List<Episodio>> fetchEpisodi() async {
   List<Episodio> episodi = [];
-  
+
   var response = await http.get(Uri.parse('https://api.sampleapis.com/rickandmorty/episodes'));
 
+  print(response.body);
   var body = json.decode(response.body);
 
-  for(var i = 0; i < body.length;i++){
-    episodi.add(Episodio.fromJson(body[i]));
+  // Controlla se body è una lista o un singolo oggetto
+  // il problema è che se la risposta non restituisce un array di oggetti non è piu una lista e da errore se è un singolo oggetto soltanto
+  if (body is List) {
+    for (var i = 0; i < body.length; i++) {
+      episodi.add(Episodio.fromJson(body[i]));
+    }
+  } else if (body is Map<String, dynamic>) {
+    episodi.add(Episodio.fromJson(body));
   }
-  print(body);
-  return episodi;
 
+  return episodi;
 }
 
 
