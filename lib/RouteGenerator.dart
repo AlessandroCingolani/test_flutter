@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/screens/DettaglioPersonaggio.dart';
 import 'package:test_flutter/screens/Home.dart';
+import 'package:test_flutter/screens/ListaEpisodi.dart';
 import 'package:test_flutter/screens/ListaPersonaggi.dart';
 import 'package:test_flutter/screens/PaginaErrore.dart';
 
@@ -17,8 +18,13 @@ class RouteGenerator {
           return MaterialPageRoute(builder: (context) => const Home());
         }
         return _erroreRoute();
+
       case '/lista-personaggi':
         return MaterialPageRoute(builder: (context) => ListaPersonaggi());
+
+      case '/lista-episodi':
+        return MaterialPageRoute(builder: (context) => ListaEpisodi());
+
       case '/dettaglio-personaggio':
         if (settings.arguments is Personaggio) {
           final Personaggio personaggio = settings.arguments as Personaggio;
