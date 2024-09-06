@@ -10,7 +10,7 @@ import 'package:test_flutter/widgets/Header.dart';
 
 Future<List<Personaggio>> fetchPersonaggi()async {
   List<Personaggio> personaggi = [];
-  var response = await http.get(Uri.parse('https://api.sampleapis.com/rickandmorty/characters/1'));
+  var response = await http.get(Uri.parse('https://api.sampleapis.com/rickandmorty/characters'));
 
   var body = json.decode(response.body);
 
