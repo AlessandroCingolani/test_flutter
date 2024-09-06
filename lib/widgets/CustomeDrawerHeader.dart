@@ -34,6 +34,12 @@ class CustomeDrawerHeader extends StatelessWidget implements PreferredSizeWidget
                 Navigator.pushNamed(context, '/lista-personaggi');
               },
             ),
+            ListTile(
+              title: const Text('Lista episodi'),
+              onTap: () {
+                Navigator.pushNamed(context, '/lista-episodi');
+              },
+            ),
           ],
         ),
       );
