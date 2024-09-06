@@ -89,7 +89,7 @@ class _CardPersonaggioState extends State<CardPersonaggio> {
                     icon: Icon(
                       isFavourite ? Icons.favorite : Icons.favorite_outline,
                       color: Colors.red,
-                      size: 24.0,
+                      size: 30.0,
                     ),
                     onPressed: () {
                       setState(() {
