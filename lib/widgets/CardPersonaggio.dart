@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:test_flutter/screens/ListaPersonaggi.dart';
 import '../models/Personaggio.dart';
+import '../providers/like.dart';
 
 class CardPersonaggio extends StatefulWidget {
   final Personaggio personaggio; // Passi l'oggetto dinamico qui
@@ -11,7 +14,7 @@ class CardPersonaggio extends StatefulWidget {
 }
 
 class _CardPersonaggioState extends State<CardPersonaggio> {
-  bool isFavourite = false;
+ // bool isFavourite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +90,13 @@ class _CardPersonaggioState extends State<CardPersonaggio> {
                   right: 10.0,
                   child: IconButton(
                     icon: Icon(
-                      isFavourite ? Icons.favorite : Icons.favorite_outline,
+                      context.watch<Like>().like.contains(widget.personaggio.id) ? Icons.favorite : Icons.favorite_outline,
                       color: Colors.red,
                       size: 30.0,
                     ),
                     onPressed: () {
                       setState(() {
-                        isFavourite = !isFavourite; // Cambia lo stato quando cliccato
+                       context.read<Like>().addRemoveLike(id: widget.personaggio.id);
                       });
                     },
                   ),
