@@ -14,10 +14,14 @@ Future<List<Personaggio>> fetchPersonaggi()async {
 
   var body = json.decode(response.body);
 
+  // tipo di dato che prende il var lista dyamic quindi all interno puoi inserire qualsiasi tipo di dato
+  print(body.runtimeType);
+
   if (body is List) {
-    for (var i = 0; i < body.length; i++) {
-      personaggi.add(Personaggio.fromJson(body[i]));
-    }
+    // test for enanched
+   for(Map<String, dynamic> personaggio in body){
+     personaggi.add(Personaggio.fromJson(personaggio));
+   }
   } else if (body is Map<String, dynamic>) {
     personaggi.add(Personaggio.fromJson(body));
   }
