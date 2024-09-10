@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:test_flutter/RouteGenerator.dart';
+import 'package:test_flutter/providers/like.dart';
 
 import 'package:test_flutter/screens/SplashScreen.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => Like())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
